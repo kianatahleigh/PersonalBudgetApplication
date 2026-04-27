@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Category List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFEBCD;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            color: #3E3A36;
+        }
+        a {
+            display: inline-block;
+            margin: 10px 0;
+            color: #2D3127;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #8f9779;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #6B705C; /* earthy green-brown */
+            color: white;
+        }
+        td {
+            background-color: #FAFAD2;
+        }
+        td a {
+            color: black;
+        }
+        td a:hover {
+            color: #333;
+        }
+        tr:hover {
+            background-color: #F0E68C;
+        }
+
+    </style>
+</head>
+<body>
+<h1>Categories</h1>
+<a th:href="@{/categories/new}">Create New Category</a>
+<br>
+
+<!-- New button for returning to the user dashboard -->
+<a th:href="@{/user/dashboard}" class="dashboard-btn">Return to Dashboard</a>
+
+<br><br>
+<table>
+    <thead>
+    <tr>
+        <th>Category</th>
+        <th>Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="category : ${categories}">
+        <td th:text="${category.name}">Category Name</td>
+        <td th:text="${category.type}">Category Type</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

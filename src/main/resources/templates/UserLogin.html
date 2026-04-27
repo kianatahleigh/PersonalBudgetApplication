@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeafTrack Login</title>
+    <style>
+        body {
+
+            background: linear-gradient(135deg, #2f4f3e, #4d5d53);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+
+        h1 {
+            color:  #f4f4f4;
+            text-align: center;
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: bounce 1s;
+        }
+
+        h2{
+            color: #e6e6e6;
+            font-weight: normal;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        form {
+            background-color: #78866b;
+            padding: 40px 30px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 300px;
+            position: relative;
+        }
+
+        label {
+            font-size: 1.2em;
+            color: white;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding: 10px;
+            margin-top: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        button {
+            background-color: #38573E;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #8f9779;
+            transform: scale(1.1);
+        }
+
+
+
+        .additional-links {
+            margin-top: 20px;
+        }
+
+        .additional-links a {
+            color: #e6e6e6;
+            text-decoration: none;
+            font-size: 1em;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .additional-links a:hover {
+            text-decoration: underline;
+            color: #8f9779;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<form th:action="@{/login}" method="POST">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <h1><span class="leaf">🌿</span> LeafTrack</h1>
+    <h2> Login!</h2>
+    <div>
+        <label for="email">Email:</label><br>
+        <input type="text" name="email" id="email" required
+               pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+               title="Must be a valid email address"/>
+        <div id="error"></div>
+    </div>
+    <br>
+    <div>
+        <label for="password">Password:</label><br>
+        <input type="password" name="password" id="password" required
+               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+               title="Must contain at least one number, one uppercase and lowercase letter, and be at least 8 characters long" />
+        <div id="error1"></div>
+    </div>
+    <button type="submit">Login</button>
+    <div class="additional-links">
+        <a href="#" th:href="@{/register}">Sign Up</a>
+
+    </div>
+</form>
+
+<script>
+
+</script>
+</body>
+</html>

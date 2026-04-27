@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Transaction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2F3E2C;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            color: #f4f4f4;
+        }
+        form {
+            margin-top: 20px;
+            background-color:#F5E6D3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #3E3A36;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #FFFACD;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            background-color: #6B705C;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color:  #A5A58D;
+        }
+        a {
+            color: #A5A58D;
+            text-decoration: none;
+            margin-top: 15px;
+            display: inline-block;
+            font-size: 20px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+
+    </style>
+</head>
+<body>
+<h1>Edit Transaction</h1>
+<form th:action="@{/transactions/edit/{id}(id=${transaction.id})}" th:object="${transaction}" method="post">
+    <label for="title">Transaction Title</label>
+    <input type="text" id="title" th:field="*{title}" required>
+
+    <div class="input-group">
+        <label for="amount">Amount ($)</label>
+        <input type="number" id="amount" th:field="*{amount}" placeholder="e.g. 100.00" step="0.01" min="0" required>
+    </div>
+
+    <label for="category">Choose Category</label>
+    <select id="category" name="categoryId" onchange="syncTypeWithCategory()" required>
+        <option value="" disabled>Select a Category</option>
+        <option th:each="category : ${categories}"
+                 th:value="${category.id}"
+                 th:text="${category.name}"
+                 th:attr="data-type=${category.type}"
+                th:selected="${transaction.category != null and category.id == transaction.category.id}">
+    </option>
+    </select>
+    <div class="radio-group">
+        <p>Select Type</p>
+        <input type="radio" th:field="*{type}" id="income" value="INCOME">
+        <label for="income">Income</label><br>
+
+        <input type="radio" th:field="*{type}" id="expense" value="EXPENSE">
+        <label for="expense">Expense</label><br>
+    </div>
+    <br>
+
+    <div>
+        <label for="transaction">Transaction Date:</label>
+        <input type="date" th:field="*{transactionDate}" id="transaction" required />
+        <div id="error1"></div>
+        <div id="days"></div>
+    </div>
+
+    <button type="submit">Update Transaction</button>
+</form>
+<a th:href="@{/transactions/view}">Back to Transaction List</a>
+
+
+
+<script>
+    function syncTypeWithCategory() {
+        const categorySelect = document.getElementById("category");
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+
+        const type = selectedOption.getAttribute("data-type");
+
+        if (type === "INCOME") {
+            document.getElementById("income").checked = true;
+        } else if (type === "EXPENSE") {
+            document.getElementById("expense").checked = true;
+        }
+    }
+
+</script>
+</body>
+</html>

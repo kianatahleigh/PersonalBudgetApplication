@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete Transaction</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #78866b;
+            color: #2D3127;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2D3127;
+        }
+        .transaction-details {
+            background-color: #9EAB9A;
+            padding: 20px;
+            border-radius: 12px;
+            width: 400px;
+            margin: 20px auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            text-align: left;
+        }
+
+        .transaction-details label {
+            font-weight: bold;
+        }
+        button {
+            background-color: #3E3A36;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color:  #d6c3a3;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 18px;
+            color: #2D3127;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #8f9779;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>Confirm Deletion</h1>
+<div class="transaction-details">
+    <label>Title:</label>
+    <p th:text="${transaction.title}"></p>
+
+    <label>Amount:</label>
+    <p th:text="'$' + ${#numbers.formatDecimal(transaction.amount, 1, 2)}"></p>
+
+    <label>Assigned Category:</label>
+    <p th:text="${transaction.category.name}"></p>
+
+    <label>Type:</label>
+    <p th:text="${transaction.type}"></p>
+
+    <label>Transaction Date: </label>
+    <p th:text="${transaction.transactionDate}"></p>
+</div>
+
+<p><strong>This action cannot be undone.</strong></p>
+<p>Are you sure you want to delete this transaction?</p>
+<form th:action="@{/transactions/delete/{id}(id=${transaction.id})}" method="post"
+      onsubmit="return confirm('Are you absolutely sure you want to delete this transaction?');">
+    <button type="submit">Yes, Delete</button>
+</form>
+<a th:href="@{/transactions/view}" class="btn btn-secondary">Cancel</a>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #EADBC8;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #2D3127;
+            font-size: 4em;
+        }
+
+        h3 {
+            color: #2D3127;
+            font-size: 2.5em;
+        }
+
+        p {
+            color: #2D3127;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        form{
+            background-color: #8f9779;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color:  #2D3127;
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color:
+            color: #fff;
+            padding: 12px;
+            margin: 5px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        li:hover {
+            transform: scale(1.05);
+        }
+
+        .dashboard-btn {
+            background-color: #6B705C;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #A5A58D;
+        }
+    </style>
+</head>
+<body>
+<h1>LeafTrack Profile<span class="leaf">🌿</span> </h1>
+<h3>LeafTracker: <span th:text="${user.firstName} + ' ' + ${user.lastName}"></span></h3>
+
+<form>
+<p>Email: <span th:text="${user.email}"></span></p>
+<p>Phone Number: <span th:text="${user.phoneNumber}"></span></p>
+<p>Date of Birth: <span th:text="${user.dateOfBirth}"></span></p>
+</form>
+
+
+<a th:href="@{/user/dashboard}" class="dashboard-btn">Return to Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>LeafTrack Analytics</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color:  #78866b;
+            padding: 20px;
+        }
+        h1 {
+            color: #2D3127;
+
+        }
+        a {
+            display: inline-block;
+            font-size: 25px;
+            margin: 10px 0;
+            color:  #2D3127;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #8f9779;
+            text-decoration: underline;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 40px auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>LeafTracks for <span th:text="${user.firstName + ' ' + user.lastName}">Name</span><span class="leaf">🌿</span></h1>
+
+<a th:href="@{/user/dashboard}" class="dashboard-btn">Return to Dashboard</a>
+
+<hr>
+
+<div class="chart-container">
+<canvas id="myChart" height="200"></canvas>
+</div>
+
+
+<script th:inline="javascript">
+
+    //inserts category spending data from the backend(thymeleaf to JavaScript object)
+    let categoryData = /*[[${categorySpending}]]*/ {};
+
+    //extracts category names(labels) and the corresponding amounts(values)
+   let xValues = Object.keys(categoryData);
+   let yValues = Object.values(categoryData);
+
+
+   let barColors = [
+       "#b91d47",
+       "#00aba9",
+       "#2b5797",
+       "#e8c3b9",
+       "#1e7145"
+   ];
+
+   //initializes teh chart.js doughnut chart utilizing the processed data
+    new Chart("myChart", {
+        type: "doughnut",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yValues
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+
+            title: {
+                display: true,
+                text: "Spending by Category",
+                fontSize: 20,
+                fontColor: "#2D3127"
+            },
+
+            legend: {
+                position: 'bottom',
+                labels: {
+                    fontSize: 16,
+                    fontColor: "#ffffff",
+                    padding: 20
+                }
+        },
+            tooltips: {
+                bodyFontSize: 16,
+                titleFontSize: 16
+            }
+        }
+    });
+</script>
+
+
+</body>
+</html>

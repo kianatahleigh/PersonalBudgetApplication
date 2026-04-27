@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Budget</title>
+    <style>
+        body {
+            font-family:  'Arial', sans-serif;
+            background: #2F3E2C;
+            padding: 20px;
+        }
+        h1 {
+            color:  #f4f4f4;
+        }
+        h2{
+            color: #3E3A36;
+        }
+        form {
+            margin-top: 20px;
+            background-color:#F5E6D3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 2px solid #FFFACD;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-family: 'Arial', sans-serif;
+        }
+        button {
+            background-color: #6B705C;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #A5A58D;
+            transform: scale(1.1);
+        }
+        a {
+            color: #8f9779;
+            text-decoration: none;
+            margin-top: 15px;
+            display: inline-block;
+            font-size: 20px;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #2D3127;
+
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #6B705C; /* earthy green-brown */
+            color: white;
+        }
+        td {
+            background-color: #FAFAD2;
+        }
+        td a {
+            color: black;
+        }
+        td a:hover {
+            color: #333;
+        }
+        tr:hover {
+            background-color: #F0E68C;
+        }
+
+
+        select {
+            width: auto;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-family:  'Arial', sans-serif;
+        }
+
+        .inform-form h2 {
+            margin-bottom: 10px;
+        }
+
+        .inform-form {
+            background-color: #EADBC8; /* warm tan */
+            border: 2px solid #d6c3a3;
+            width: auto;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        label, p {
+            color: #3E3A36; /* warm dark brown */
+        }
+    </style>
+</head>
+<body>
+<h1>Create a New Budget</h1>
+
+
+<form th:action="@{/budgets/create}" th:object="${budget}" method="post" onsubmit="prepareForm()">
+    <input type="hidden" name="allocationsJson" id="allocationsJson">
+    <!-- Hidden input to store the selected category's ID -->
+
+    <label for="name">Budget Name</label>
+    <input type="text" id="name"  th:field="*{name}" required>
+
+    <div class="input-group">
+        <label for="amount">Total Budget Amount ($)</label>
+        <input type="number" id="amount" th:field="*{amount}" placeholder="e.g. 100.00" step="0.01" min="0">
+    </div>
+
+    <br><br>
+    <div class="inform-form">
+        <h2>Add Categories to Your Budget</h2>
+        <p style="font-size: 14px; margin-bottom: 15px;">
+            Add categories and allocate amounts. They will appear below before saving your budget.
+        </p>
+        <label for="category">Choose Category</label>
+        <select id="category" name="categoryId">
+            <option value="" disabled selected> Select a Category</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"></option>
+        </select>
+
+        <div class="input-group">
+            <label for="allocatedAmount">Allocated Amount ($)</label>
+            <input type="number" id="allocatedAmount" name="allocatedAmount" placeholder="e.g. 100.00" step="0.01" min="0">
+        </div>
+
+        <button type="button" onclick="addAllocation()">Add</button>
+    </div>
+    <br>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="allocationTableBody">
+        </tbody>
+    </table>
+
+    <div>
+        <label for="startDate">Start Date:</label>
+        <input type="date" th:field="*{startDate}" id="startDate" required />
+        <div id="error1"></div>
+        <div id="days"></div>
+    </div>
+
+    <div>
+        <label for="endDate">End Date:</label>
+        <input type="date" th:field="*{endDate}" id="endDate" required />
+        <div id="error2"></div>
+        <div id="days1"></div>
+    </div>
+
+    <button type="submit">Create Budget</button>
+</form>
+
+<a th:href="@{/user/dashboard}" class="dashboard-btn">Return to Dashboard</a>
+<script>
+
+    //verifies that a start date has been selected
+    function verifyFields1() {
+        var transaction = document.getElementById("startDate").value;
+        if (transaction === "") {
+            document.getElementById("error1").innerHTML = "Invalid Start Date";
+            return false;
+        } else {
+            document.getElementById("error1").innerHTML = "";
+            return true;
+        }
+    }
+
+//verifies that an end date has been selected
+    function verifyFields2() {
+        var transaction = document.getElementById("endDate").value;
+        if (transaction === "") {
+            document.getElementById("error2").innerHTML = "Invalid End Date";
+            return false;
+        } else {
+            document.getElementById("error2").innerHTML = "";
+            return true;
+        }
+    }
+
+
+
+
+//stores all the category allocations before submitting to the backend
+    let allocations = [];
+
+    //adds a category allocation to the list and updates teh table
+    function addAllocation() {
+        const categorySelect = document.getElementById("category");
+        const categoryId = categorySelect.value;
+        const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
+
+        const amount = document.getElementById("allocatedAmount").value;
+
+//makes sure both category and amount are provided
+        if (!categoryId || !amount) {
+            alert("Please select a category and enter an amount.");
+            return;
+        }
+//prevents duplicate category allocations
+        if (allocations.some(item => item.categoryId === categoryId)) {
+            alert("Category already added.");
+            return;
+        }
+
+        //adds allocation object to array
+        allocations.push({
+            categoryId: categoryId,
+            categoryName: categoryName,
+            amount: amount
+        });
+
+        //resets the input fields after adding
+        renderTable();
+        document.getElementById("allocatedAmount").value = "";
+        document.getElementById("category").selectedIndex = 0;
+    }
+
+    //renders the allocation list dynamically into the table
+    function renderTable() {
+        const tableBody = document.getElementById("allocationTableBody");
+        tableBody.innerHTML = "";
+
+        allocations.forEach((item, index) => {
+            tableBody.innerHTML += `
+            <tr>
+                <td>${item.categoryName}</td>
+                <td>${item.amount}</td>
+                <td>
+                    <button type="button" onclick="deleteAllocation(${index})">Delete</button>
+                </td>
+            </tr>
+        `;
+        });
+    }
+
+    //removes an allocation by index and then renders the table over again
+    function deleteAllocation(index) {
+        allocations.splice(index, 1);
+        renderTable();
+    }
+
+    //converts allocations array into JSON before submitting form to backend
+    function prepareForm() {
+        document.getElementById("allocationsJson").value = JSON.stringify(allocations);
+    }
+
+
+
+</script>
+</body>
+</html>
