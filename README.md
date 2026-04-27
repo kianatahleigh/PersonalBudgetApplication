@@ -1,10 +1,10 @@
-Personal Budget Application
+# Personal Budget Application
 
-Description:
+## Description:
 This is a personal budget management application built utilizing Spring Boot.
 It is designed to mimic real budget planning and allocation.
 
-Project Structure:
+## Project Structure:
 - PersonalBudgetApplication/ → Main Spring Boot application
 - PersonalBudgetSQLSchema/ → Database export (.sql file)
 - DemoVideo/ → Application demo video
@@ -14,7 +14,7 @@ Project Structure:
 - ProjectTestReport/ → Test Report
 
 
-Features:
+## Features:
 -User authentication and security
 -Create, read, update, and delete transactions
 -Category-based transaction organization(income/expense types)
@@ -22,18 +22,18 @@ Features:
 -Financial summary dashboard
 -Analytics summary
 
-Requirements
+## Requirements
 -Java 21
 -Maven
 -MySQL
 
 
-Setup Instructions:
+## Setup Instructions:
 
 1. Clone or download the project.
 
 
-2.Create the database in MySQL:
+2.  Create the database in MySQL:
 CREATE DATABASE PersonalBudgetApplicationV2_DB;
 
 
@@ -47,19 +47,22 @@ CREATE DATABASE PersonalBudgetApplicationV2_DB;
    spring.datasource.username=your_mysql_username
    spring.datasource.password=your_mysql_password
 
+
 5. Run the application:
    mvn spring-boot:run
+
 
 6. Open in browser:
    http://localhost:8080
 
-Notes:
+
+**Notes:**
 -The application was developed and tested using MySQL.
 -A demo video is included to demonstrate functionality.
 
-Known Issues:
+**Known Issues:**
 No known issues at this time.
 
 
-Author:
+**Author:**
 Rachel Moment
